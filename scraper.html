@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>GO app</title>
+	<b><h1 align="center">Find all URL's in any website</h1></b>
+	<br>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		function myScript(){
+			if($('#url').val()){
+				$("#submit").attr('disabled', true);
+				$('#res').text('')
+				$('#total').text('')
+				$.ajax({
+				  type: "POST",
+				  url: "scrape.php",
+				  data: {name:$('#url').val()}
+				}).done(function(data) {
+					if(data){
+						$("#submit").attr('disabled', false);
+						var urls = data.split(" - ")
+						urls.splice( 0, 1 )
+						$('#total').text(urls.length-1)
+						var cList = $('#res')
+						$.each(urls, function(i)
+						{
+						    var li = $('<li/>').appendTo(cList);
+						    var aaa = $('<a/>')
+						    			.attr('href',urls[i])
+						    			.attr('target','_blank')
+						    			.text(urls[i])
+						        		.appendTo(li);
+						});
+					}
+					else{
+						$('#res').text('Check URL eg: https://www.google.com')
+					}
+				});
+			}
+		}
+	</script>
+</head>
+<body>
+	<input id="url" placeholder="Enter url" style="width :200px"></input>
+	<button id="submit" onclick="myScript()">Search</button>
+	<br>
+	<br>
+	eg: https://www.google.com (add http/https accordingly) (to search multiple urls together enter url's followed by space )
+	<br>
+	<br>
+	<div>Total Results : <div id='total' style="display: inline;"></div></div>
+	<ul id='res'></ul>
+</body>
+</html>
