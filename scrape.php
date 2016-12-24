@@ -1,7 +1,7 @@
 <?php
 
 $data = $_POST["name"];
-$a = exec('./scrape '.$data);
+$a = shell_exec('./scrape '.$data);
 echo $a;
 
 ?>
